@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
-enum ChartType { candlestick, line, area }
+/// Chart display type
+enum ChartType {
+  candlestick,
+  bar,
+  hollow,
+  heikinAshi,
+  line,
+  area,
+}
+
+/// Overlay indicators (displayed on main chart)
+enum OverlayIndicator {
+  sma20,
+  sma50,
+  sma200,
+  ema20,
+  bollingerBands,
+}
+
+/// Sub indicators (displayed in separate panel)
+enum SubIndicator {
+  rsi,
+  macd,
+  stochasticRsi,
+  momentum,
+}
 
 class ChartConfig {
   final ChartType type;
@@ -9,6 +34,8 @@ class ChartConfig {
   final bool showVolume;
   final double volumeHeightRatio;
   final ChartTheme theme;
+  final Set<OverlayIndicator> overlayIndicators;
+  final SubIndicator? subIndicator;
 
   const ChartConfig({
     this.type = ChartType.candlestick,
@@ -16,7 +43,11 @@ class ChartConfig {
     this.showVolume = true,
     this.volumeHeightRatio = 0.2,
     this.theme = const ChartTheme(),
+    this.overlayIndicators = const {},
+    this.subIndicator,
   });
+
+  bool get hasSubIndicator => subIndicator != null;
 
   ChartConfig copyWith({
     ChartType? type,
@@ -24,6 +55,9 @@ class ChartConfig {
     bool? showVolume,
     double? volumeHeightRatio,
     ChartTheme? theme,
+    Set<OverlayIndicator>? overlayIndicators,
+    SubIndicator? subIndicator,
+    bool clearSubIndicator = false,
   }) {
     return ChartConfig(
       type: type ?? this.type,
@@ -31,7 +65,26 @@ class ChartConfig {
       showVolume: showVolume ?? this.showVolume,
       volumeHeightRatio: volumeHeightRatio ?? this.volumeHeightRatio,
       theme: theme ?? this.theme,
+      overlayIndicators: overlayIndicators ?? this.overlayIndicators,
+      subIndicator: clearSubIndicator ? null : (subIndicator ?? this.subIndicator),
     );
+  }
+
+  ChartConfig toggleOverlay(OverlayIndicator indicator) {
+    final newSet = Set<OverlayIndicator>.from(overlayIndicators);
+    if (newSet.contains(indicator)) {
+      newSet.remove(indicator);
+    } else {
+      newSet.add(indicator);
+    }
+    return copyWith(overlayIndicators: newSet);
+  }
+
+  ChartConfig setSubIndicator(SubIndicator? indicator) {
+    if (indicator == subIndicator) {
+      return copyWith(clearSubIndicator: true);
+    }
+    return copyWith(subIndicator: indicator);
   }
 }
 

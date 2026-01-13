@@ -7,7 +7,10 @@ import '../../presentation/features/home/home_screen.dart';
 import '../../presentation/features/search/search_screen.dart';
 import '../../presentation/features/stock_detail/stock_detail_screen.dart';
 import '../../presentation/features/chart/chart_screen.dart';
-import '../../presentation/features/settings/settings_screen.dart';
+import '../../presentation/features/market/market_screen.dart';
+import '../../presentation/features/community/community_screen.dart';
+import '../../presentation/features/storage/storage_screen.dart';
+import '../../presentation/features/mypage/mypage_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -18,6 +21,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state, child) => MainShell(child: child),
         routes: [
           GoRoute(
+            path: RouteNames.market,
+            name: 'market',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: MarketScreen(),
+            ),
+          ),
+          GoRoute(
+            path: RouteNames.community,
+            name: 'community',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: CommunityScreen(),
+            ),
+          ),
+          GoRoute(
             path: RouteNames.home,
             name: 'home',
             pageBuilder: (context, state) => const NoTransitionPage(
@@ -25,17 +42,24 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
+            path: RouteNames.storage,
+            name: 'storage',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: StorageScreen(),
+            ),
+          ),
+          GoRoute(
+            path: RouteNames.mypage,
+            name: 'mypage',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: MyPageScreen(),
+            ),
+          ),
+          GoRoute(
             path: RouteNames.search,
             name: 'search',
             pageBuilder: (context, state) => const NoTransitionPage(
               child: SearchScreen(),
-            ),
-          ),
-          GoRoute(
-            path: RouteNames.settings,
-            name: 'settings',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: SettingsScreen(),
             ),
           ),
         ],
